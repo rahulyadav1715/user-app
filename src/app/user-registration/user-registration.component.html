@@ -1,0 +1,121 @@
+<div class="mat-elevation-z8">
+  <h3>User Registration</h3>
+  <form [formGroup]="userForm" autocomplete="off" (ngSubmit)="onSubmit()">
+    <ng-container formArrayName="users">
+      <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="userName">
+          <th mat-header-cell *matHeaderCellDef>User Name</th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <mat-form-field appearance='legacy'>
+              <input matInput type="text" formControlName="userName" />
+              <mat-error
+                *ngIf="showValidation && element.controls.userName.invalid && (element.controls.userName.dirty || element.controls.userName.touched)">
+                <span *ngIf="element.controls.userName.errors?.required">Required</span>
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <mat-form-field appearance='legacy'>
+              <input matInput type="email" formControlName="email" />
+              <mat-error
+                *ngIf="showValidation && element.controls.email.invalid && (element.controls.email.dirty || element.controls.email.touched)">
+                <span *ngIf="element.controls.email.errors?.required">Required</span>
+                <span *ngIf="!element.controls.email.errors?.required && element.controls.email.errors?.email">Invalid
+                  email</span>
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phoneNo">
+          <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <mat-form-field appearance='legacy'>
+              <input matInput type="text" formControlName="phoneNo" mask="0000000000" [showMaskTyped]="false" />
+              <mat-error
+                *ngIf="showValidation && element.controls.phoneNo.invalid && (element.controls.phoneNo.dirty || element.controls.phoneNo.touched)">
+                <span *ngIf="element.controls.phoneNo.errors?.required">Required</span>
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="password">
+          <th mat-header-cell *matHeaderCellDef>Password</th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <mat-form-field appearance='legacy'>
+              <input matInput type="password" formControlName="password"
+                [type]="element.controls.hidePassword.value ? 'password' : 'text'" />
+              <button type="button" mat-icon-button matSuffix
+                (click)="element.controls.hidePassword.setValue(!element.controls.hidePassword.value)">
+                <mat-icon>{{element.controls.hidePassword.value ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error
+                *ngIf="showValidation && element.controls.password.invalid && (element.controls.password.dirty || element.controls.password.touched)">
+                <span *ngIf="element.controls.password.errors?.required">Required</span>
+                <span *ngIf="element.controls.password.errors?.minlength">Password should be minimum 8 digit</span>
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="confirmPassword">
+          <th mat-header-cell *matHeaderCellDef>Confirm Password</th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <mat-form-field appearance='legacy'>
+              <input matInput type="password" formControlName="confirmPassword"
+                [type]="element.controls.hideConfirmPassword.value ? 'password' : 'text'" />
+              <button type="button" mat-icon-button matSuffix
+                (click)="element.controls.hideConfirmPassword.setValue(!element.controls.hideConfirmPassword.value)">
+                <mat-icon>{{element.controls.hideConfirmPassword.value ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error
+                *ngIf="showValidation && element.controls.confirmPassword.invalid && (element.controls.confirmPassword.dirty || element.controls.confirmPassword.touched)">
+                <span *ngIf="element.controls.confirmPassword.errors?.required">Required</span>
+                <span *ngIf="element.controls.confirmPassword.errors?.minlength">Password should be minimum 8
+                  digit</span>
+              </mat-error>
+            </mat-form-field>
+            <span class="mat-error" style="margin-top: -12px;"
+              *ngIf="element.controls.confirmPassword.value !== '' && !element.controls.confirmPassword.invalid && element.errors?.notmatched">Password
+              doesn't matched</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+
+            <button type="button" mat-icon-button class="material-icons app-toolbar-menu save-button" matTooltip="Add"
+              color="primary" matTooltipPosition="right" (click)="addNewRow(true)" *ngIf="i === 0">
+              <mat-icon>add_circle_outline</mat-icon>
+            </button>
+
+            <button type="button" mat-icon-button class="material-icons app-toolbar-menu delete-button"
+              matTooltip="Delete" color="warn" matTooltipPosition="right" *ngIf="i > 0" (click)="deleteRow(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="7">
+            No users found
+          </td>
+        </tr>
+      </table>
+    </ng-container>
+
+    <div class="submit-btn">
+      <button type="submit" mat-raised-button color="primary">Submit</button>
+    </div>
+  </form>
+</div>

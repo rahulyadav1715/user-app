@@ -1,0 +1,98 @@
+<div class="mat-elevation-z8">
+  <h3>User List</h3>
+  <form [formGroup]="userForm" autocomplete="off">
+    <ng-container formArrayName="users">
+      <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="userName">
+          <th mat-header-cell *matHeaderCellDef>User Name</th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <ng-container *ngIf="element.controls.isEdit.value else nameTempRef">
+              <mat-form-field appearance='legacy'>
+                <input matInput type="text" formControlName="userName" />
+                <mat-error
+                  *ngIf="showValidation && element.controls.userName.invalid && (element.controls.userName.dirty || element.controls.userName.touched)">
+                  <span *ngIf="element.controls.userName.errors?.required">Required</span>
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+            <ng-template #nameTempRef>
+              {{element.controls.userName.value}}
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <ng-container *ngIf="element.controls.isEdit.value else nameTempRef">
+              <mat-form-field appearance='legacy'>
+                <input matInput type="email" formControlName="email" />
+                <mat-error
+                  *ngIf="showValidation && element.controls.email.invalid && (element.controls.email.dirty || element.controls.email.touched)">
+                  <span *ngIf="element.controls.email.errors?.required">Required</span>
+                  <span *ngIf="!element.controls.email.errors?.required && element.controls.email.errors?.email">Invalid
+                    email</span>
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+            <ng-template #nameTempRef>
+              {{element.controls.email.value}}
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phoneNo">
+          <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <ng-container *ngIf="element.controls.isEdit.value else nameTempRef">
+              <mat-form-field appearance='legacy'>
+                <input matInput type="text" formControlName="phoneNo" mask="0000000000" [showMaskTyped]="false" />
+                <mat-error
+                  *ngIf="showValidation && element.controls.phoneNo.invalid && (element.controls.phoneNo.dirty || element.controls.phoneNo.touched)">
+                  <span *ngIf="element.controls.phoneNo.errors?.required">Required</span>
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+            <ng-template #nameTempRef>
+              {{element.controls.phoneNo.value}}
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+
+            <button type="button" mat-icon-button class="material-icons app-toolbar-menu save-button" matTooltip="Edit"
+              matTooltipPosition="left" color="primary" *ngIf="!element.controls.isEdit.value"
+              (click)="onEdit(element, i)">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button type="button" mat-icon-button class="material-icons app-toolbar-menu save-button" matTooltip="Save"
+              matTooltipPosition="left" color="primary" *ngIf="element.controls.isEdit.value"
+              (click)="onSave(element, i)">
+              <mat-icon>check_circle</mat-icon>
+            </button>
+
+            <button type="button" mat-icon-button class="material-icons app-toolbar-menu delete-button"
+              matTooltip="Cancel" matTooltipPosition="right" color="warn" *ngIf="element.controls.isEdit.value"
+              (click)="onCancel(element, i)">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="7">
+            No users found
+          </td>
+        </tr>
+      </table>
+    </ng-container>
+  </form>
+</div>

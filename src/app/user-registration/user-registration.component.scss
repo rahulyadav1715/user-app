@@ -1,0 +1,40 @@
+.mat-elevation-z8 {
+    padding: 30px 25px;
+
+    table {
+        width: 100%;
+        th{
+            font-size: 16px;
+            font-weight: 600;
+        }
+        th,td{
+            width: 20%;
+            &:last-child{
+                width: 10%;
+            }
+        }
+
+        .mat-form-field {
+            font-size: 14px;
+            width: 80%;
+
+            .mat-error {
+                font-size: 11px;
+            }
+        }
+    }
+}
+
+.submit-btn {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-top: 25px;
+}
+
+span {
+    &.mat-error {
+        font-size: 11px;
+        font-weight: 400;
+    }
+}
